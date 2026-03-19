@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sistema de Visita - Farmácia</title>
+    <title>Sistema Verba Flex - Farmácia</title>
     <style>
         :root {
             --primary-color: #007bff;
@@ -11,16 +12,19 @@
             --danger-color: #dc3545;
             --success-color: #28a745;
             --warning-color: #ffc107;
-            --bg-color: #f0f2f5;
+            --bg-color: #f4f7f6;
             --card-bg: #ffffff;
             --text-color: #333;
             --border-radius: 12px;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
             margin: 0;
             padding: 15px;
@@ -34,17 +38,22 @@
             background-color: var(--card-bg);
             padding: 20px;
             border-radius: var(--border-radius);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 600px;
             margin-bottom: 20px;
         }
 
-        h2, h3 { text-align: center; color: var(--text-color); margin-top: 0; }
-        h2 { margin-bottom: 20px; font-size: 1.5rem; }
-        h3 { margin-bottom: 15px; font-size: 1.2rem; }
+        h2,
+        h3 {
+            text-align: center;
+            color: var(--text-color);
+            margin: 0 0 20px 0;
+        }
 
-        .form-group { margin-bottom: 15px; }
+        .form-group {
+            margin-bottom: 15px;
+        }
 
         label {
             display: block;
@@ -54,41 +63,40 @@
             font-size: 0.9rem;
         }
 
-        input, select {
+        input,
+        select {
             width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 1rem;
-            background-color: #fff;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
         }
 
-        input:focus, select:focus {
+        input:focus {
             border-color: var(--primary-color);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
         }
 
-        /* Campo Outros - Escondido por padrão */
+        .row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .col {
+            flex: 1;
+        }
+
         #campoOutros {
             display: none;
             margin-top: 10px;
-            animation: slideDown 0.3s ease;
+            padding: 10px;
+            background: #fffdf5;
+            border: 1px dashed var(--warning-color);
+            border-radius: 8px;
+            animation: fadeIn 0.3s;
         }
-
-        #campoOutros input {
-            border-color: var(--warning-color);
-            background-color: #fffdf5;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .row { display: flex; gap: 12px; }
-        .col { flex: 1; }
 
         button {
             width: 100%;
@@ -100,405 +108,330 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
-            margin-top: 10px;
+            transition: 0.2s;
         }
 
-        button:hover { background-color: var(--primary-dark); }
-        button:active { transform: scale(0.98); }
+        button:active {
+            transform: scale(0.98);
+        }
 
-        button.btn-danger {
+        .btn-export {
+            background-color: var(--success-color);
+            width: auto;
+            padding: 8px 15px;
+            font-size: 0.8rem;
+        }
+
+        .btn-danger {
             background-color: var(--danger-color);
             width: auto;
-            padding: 8px 16px;
-            font-size: 0.85rem;
-            margin: 0;
+            padding: 8px 15px;
+            font-size: 0.8rem;
         }
-        button.btn-danger:hover { background-color: #a71d2a; }
 
         .calc-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
             color: white;
             padding: 15px;
             border-radius: 10px;
             margin: 20px 0;
         }
-        .calc-box h4 { margin: 0 0 10px 0; font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 8px; }
-        .calc-item { display: flex; justify-content: space-between; margin: 6px 0; font-size: 0.95rem; }
-        .calc-total { 
-            font-weight: bold; 
-            font-size: 1.2rem; 
-            margin-top: 12px; 
-            padding-top: 12px; 
-            border-top: 2px solid rgba(255,255,255,0.5); 
-            display: flex; 
-            justify-content: space-between; 
+
+        .calc-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .calc-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-weight: bold;
+            font-size: 1.1rem;
         }
 
         #resultado {
-            margin-top: 15px;
-            padding: 15px;
             background-color: #d4edda;
             color: #155724;
+            padding: 12px;
             border-radius: 8px;
+            text-align: center;
             display: none;
-            border-left: 5px solid var(--success-color);
-            animation: fadeIn 0.5s;
+            margin-top: 15px;
+            border: 1px solid #c3e6cb;
         }
 
         .history-container {
             width: 100%;
             max-width: 600px;
             background: white;
-            padding: 20px;
+            padding: 15px;
             border-radius: var(--border-radius);
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .history-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
             margin-bottom: 15px;
         }
-
-        .table-responsive { width: 100%; overflow-x: auto; }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.9rem;
-            min-width: 400px;
+            font-size: 0.85rem;
         }
 
-        th, td {
+        th {
+            background: #f8f9fa;
+            padding: 10px;
             text-align: left;
-            padding: 12px;
+            border-bottom: 2px solid #eee;
+        }
+
+        td {
+            padding: 10px;
             border-bottom: 1px solid #eee;
         }
 
-        th { background-color: #f8f9fa; color: #555; font-weight: 600; }
-        
-        .empty-msg {
-            text-align: center;
-            color: #999;
-            padding: 30px;
-            font-style: italic;
-        }
-
         .badge {
-            display: inline-block;
-            padding: 4px 8px;
+            padding: 2px 6px;
             border-radius: 4px;
-            font-size: 0.75rem;
-            background: #e2e6ea;
-            color: #333;
-            font-weight: 600;
+            font-size: 0.7rem;
+            background: #eee;
+            font-weight: bold;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
-        /* --- RESPONSIVIDADE MOBILE --- */
-        @media (max-width: 599px) {
-            body { padding: 10px; }
-            .container, .history-container { padding: 15px; }
-            .row { flex-direction: column; gap: 15px; }
-            
-            table, thead, tbody, th, td, tr { display: block; }
-            thead tr { position: absolute; top: -9999px; left: -9999px; }
-            tr { 
-                border: 1px solid #ddd;
+        /* Estilo Mobile - Tabela vira Cards */
+        @media (max-width: 500px) {
+            thead {
+                display: none;
+            }
+
+            tr {
+                display: block;
+                border: 1px solid #eee;
+                margin-bottom: 10px;
                 border-radius: 8px;
-                margin-bottom: 15px;
-                background: #fff;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+                padding: 10px;
             }
-            td { 
+
+            td {
+                display: flex;
+                justify-content: space-between;
+                padding: 5px 0;
                 border: none;
-                border-bottom: 1px solid #eee;
-                position: relative;
-                padding-left: 50%;
-                text-align: right;
-                padding: 15px 12px;
             }
-            td:before {
-                position: absolute;
-                top: 12px;
-                left: 12px;
-                width: 45%;
-                padding-right: 10px;
-                white-space: nowrap;
-                text-align: left;
-                font-weight: bold;
+
+            td::before {
                 content: attr(data-label);
-                color: #555;
+                font-weight: bold;
+                color: #777;
             }
-            .table-responsive { overflow-x: hidden; }
-            table { min-width: auto; }
-            .history-header { flex-direction: column; align-items: stretch; }
-            .history-header button { width: 100%; margin-top: 5px; }
         }
     </style>
 </head>
+
 <body>
 
-<!-- Formulário -->
-<div class="container">
-    <h2>📋 Verba Flex</h2>
-    
-    <form id="visitaForm">
-        <div class="form-group">
-            <label for="nomeFarmacia">🏪 Nome da Farmácia *</label>
-            <input type="text" id="nomeFarmacia" placeholder="Digite o nome" required>
-        </div>
+    <div class="container">
+        <h2>📋 Verba Flex</h2>
 
-        <div class="form-group">
-            <label for="valorTotal">💰 Valor Pedido (R$) *</label>
-            <input type="number" id="valorTotal" step="0.01" min="0" value="789.16" oninput="calcularPorcentagens()" required>
-        </div>
-
-        <div class="row">
-            <div class="col form-group">
-                <label for="negociacao">📊 Negociação (%)</label>
-                <input type="number" id="negociacao" step="0.1" min="0" value="6" oninput="calcularPorcentagens()">
+        <form id="visitaForm">
+            <div class="form-group">
+                <label>🏪 Nome da Farmácia *</label>
+                <input type="text" id="nomeFarmacia" placeholder="Ex: Farmácia Central" required>
             </div>
-            <div class="col form-group">
-                <label for="ativacao">🚀 Ativação EC (%)</label>
-                <input type="number" id="ativacao" step="0.1" min="0" value="16" oninput="calcularPorcentagens()">
+
+            <div class="form-group">
+                <label>💰 Valor Pedido (R$) *</label>
+                <input type="number" id="valorTotal" step="0.01" value="0.00" oninput="calcular()">
             </div>
-        </div>
 
-        <!-- Categoria com Datalist + Campo Outros -->
-        <div class="form-group">
-            <label for="categoria">📦 Categoria *</label>
-            <input list="listaCategorias" id="categoria" placeholder="Selecione ou digite..." value="Pampers" required onchange="verificarOutros()">
-            <datalist id="listaCategorias">
-                <option value="Pampers">
-                <option value="Huggies">
-                <option value="Mony">
-                <option value="Babysec">
-                <option value="Outros">
-            </datalist>
-            
-            <!-- Campo extra para quando selecionar "Outros" -->
-            <div id="campoOutros">
-                <input type="text" id="categoriaOutros" placeholder="✏️ Digite a categoria (ex: Fraldas Noturnas, Lenços, etc.)">
+            <div class="row">
+                <div class="col form-group">
+                    <label>📊 Negoc. (%)</label>
+                    <input type="number" id="negociacao" step="0.1" value="6" oninput="calcular()">
+                </div>
+                <div class="col form-group">
+                    <label>🚀 Ativ. EC (%)</label>
+                    <input type="number" id="ativacao" step="0.1" value="16" oninput="calcular()">
+                </div>
             </div>
-            
-            <small style="color: #666; font-size: 0.8rem;">💡 Selecione "Outros" para digitar uma categoria personalizada.</small>
-        </div>
 
-        <div class="form-group">
-            <label for="tipoVisita">🔄 Tipo de Visita *</label>
-            <select id="tipoVisita" required>
-                <option value="Reativação" selected>Reativação</option>
-                <option value="Manutenção">Manutenção</option>
-                <option value="Novo">Novo Cliente</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label>📦 Categoria *</label>
+                <select id="categoria" onchange="verificarOutros()" required>
+                    <option value="Pampers">Pampers</option>
+                    <option value="Huggies">Huggies</option>
+                    <option value="Nestlé">Nestlé</option>
 
-        <!-- Box de Cálculo -->
-        <div class="calc-box">
-            <h4>🧮 Resumo Cálculo</h4>
-            <div class="calc-item"><span>Base:</span> <span id="calcBase">R$ 789,16</span></div>
-            <div class="calc-item"><span>Negociação (<span id="percNegLabel">6</span>%):</span> <span id="calcNegociacao">R$ 47,35</span></div>
-            <div class="calc-item"><span>Ativação EC (<span id="percAtivLabel">16</span>%):</span> <span id="calcAtivacao">R$ 126,27</span></div>
-            <div class="calc-total"><span>💵 Total %:</span> <span id="calcTotalPorcentagem">R$ 173,62</span></div>
-        </div>
+                    <option value="Outros">-- Outros --</option>
+                </select>
+                <div id="campoOutros">
+                    <input type="text" id="categoriaOutros" placeholder="Digite a categoria personalizada">
+                </div>
+            </div>
 
-        <button type="submit">✅ Salvar Visita</button>
-    </form>
+            <div class="form-group">
+                <label>🔄 Tipo de Visita</label>
+                <select id="tipoVisita">
+                    <option value="Reativação">Reativação</option>
 
-    <div id="resultado">
-        ✅ <strong>Visita salva com sucesso!</strong> Dados armazenados no histórico abaixo.
+                    <option value="Novo">Novo Cliente</option>
+                </select>
+            </div>
+
+            <div class="calc-box">
+                <div class="calc-item"><span>Valor Base:</span> <span id="resBase">R$ 0,00</span></div>
+                <div class="calc-item"><span>Soma Verbas (<span id="totalPerc">22</span>%):</span> <span
+                        id="resVerba">R$ 0,00</span></div>
+                <div class="calc-total"><span>💵 Total Verba:</span> <span id="resTotal">R$ 0,00</span></div>
+            </div>
+
+            <button type="submit">✅ Salvar no Histórico</button>
+        </form>
+
+        <div id="resultado">Salvo com sucesso!</div>
     </div>
-</div>
 
-<!-- Histórico -->
-<div class="history-container">
-    <div class="history-header">
-        <h3>📜 Histórico</h3>
-        <button onclick="limparHistorico()" class="btn-danger">🗑️ Limpar Tudo</button>
-    </div>
-    
-    <div class="table-responsive">
-        <table id="tabelaHistorico">
+    <div class="history-container">
+        <div class="history-header">
+            <h3>📜 Histórico</h3>
+            <div style="display: flex; gap: 5px;">
+                <button onclick="exportarCSV()" class="btn-export">📥 Exportar</button>
+                <button onclick="limparTudo()" class="btn-danger">🗑️ Limpar</button>
+            </div>
+        </div>
+
+        <table>
             <thead>
                 <tr>
                     <th>Data</th>
                     <th>Farmácia</th>
-                    <th>Categoria</th>
                     <th>Valor</th>
-                    <th>Total %</th>
+                    <th>Verba</th>
                 </tr>
             </thead>
             <tbody id="listaVisitas"></tbody>
         </table>
+        <div id="msgVazio" style="text-align:center; padding:20px; color:#999; font-style:italic;">Nenhum registro.
+        </div>
     </div>
-    <div id="msgVazio" class="empty-msg">Nenhuma visita registrada ainda.</div>
-</div>
 
-<script>
-    // Formatador de moeda BRL
-    function formatarMoeda(valor) {
-        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
-    }
+    <script>
+        const fMoeda = (v) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v);
+        const fData = (iso) => new Date(iso).toLocaleDateString('pt-BR') + ' ' + new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
-    // Formatador de data/hora
-    function formatarData(dataISO) {
-        const data = new Date(dataISO);
-        return data.toLocaleDateString('pt-BR') + ' ' + 
-               data.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
-    }
-
-    // Verificar se selecionou "Outros" na categoria
-    function verificarOutros() {
-        const categoria = document.getElementById('categoria').value;
-        const campoOutros = document.getElementById('campoOutros');
-        const inputOutros = document.getElementById('categoriaOutros');
-        
-        if (categoria.toLowerCase() === 'outros') {
-            campoOutros.style.display = 'block';
-            inputOutros.focus();
-            inputOutros.required = true;
-        } else {
-            campoOutros.style.display = 'none';
-            inputOutros.value = '';
-            inputOutros.required = false;
+        function verificarOutros() {
+            const inputOutros = document.getElementById('campoOutros');
+            inputOutros.style.display = document.getElementById('categoria').value === 'Outros' ? 'block' : 'none';
         }
-    }
 
-    // Calcular porcentagens em tempo real
-    function calcularPorcentagens() {
-        const valorTotal = parseFloat(document.getElementById('valorTotal').value) || 0;
-        const percNegociacao = parseFloat(document.getElementById('negociacao').value) || 0;
-        const percAtivacao = parseFloat(document.getElementById('ativacao').value) || 0;
+        function calcular() {
+            const valor = parseFloat(document.getElementById('valorTotal').value) || 0;
+            const n = parseFloat(document.getElementById('negociacao').value) || 0;
+            const a = parseFloat(document.getElementById('ativacao').value) || 0;
 
-        const valorNegociacao = valorTotal * (percNegociacao / 100);
-        const valorAtivacao = valorTotal * (percAtivacao / 100);
-        const totalPorcentagens = valorNegociacao + valorAtivacao;
+            const percTotal = n + a;
+            const totalVerba = valor * (percTotal / 100);
 
-        // Atualiza labels das porcentagens
-        document.getElementById('percNegLabel').textContent = percNegociacao;
-        document.getElementById('percAtivLabel').textContent = percAtivacao;
-        
-        // Atualiza valores calculados
-        document.getElementById('calcBase').textContent = formatarMoeda(valorTotal);
-        document.getElementById('calcNegociacao').textContent = formatarMoeda(valorNegociacao);
-        document.getElementById('calcAtivacao').textContent = formatarMoeda(valorAtivacao);
-        document.getElementById('calcTotalPorcentagem').textContent = formatarMoeda(totalPorcentagens);
-    }
+            document.getElementById('totalPerc').textContent = percTotal.toFixed(1);
+            document.getElementById('resBase').textContent = fMoeda(valor);
+            document.getElementById('resVerba').textContent = fMoeda(totalVerba);
+            document.getElementById('resTotal').textContent = fMoeda(totalVerba);
+        }
 
-    // Salvar Visita no LocalStorage
-    document.getElementById('visitaForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+        document.getElementById('visitaForm').addEventListener('submit', function (e) {
+            e.preventDefault();
 
-        const valorTotal = parseFloat(document.getElementById('valorTotal').value) || 0;
-        const negociacao = parseFloat(document.getElementById('negociacao').value) || 0;
-        const ativacao = parseFloat(document.getElementById('ativacao').value) || 0;
-        
-        // Pegar categoria (se for Outros, usa o valor digitado)
-        let categoriaFinal = document.getElementById('categoria').value.trim();
-        if (categoriaFinal.toLowerCase() === 'outros') {
-            const outrosTexto = document.getElementById('categoriaOutros').value.trim();
-            if (outrosTexto) {
-                categoriaFinal = 'Outros - ' + outrosTexto;
+            const valor = parseFloat(document.getElementById('valorTotal').value) || 0;
+            const n = parseFloat(document.getElementById('negociacao').value) || 0;
+            const a = parseFloat(document.getElementById('ativacao').value) || 0;
+            let cat = document.getElementById('categoria').value;
+            if (cat === 'Outros') cat = document.getElementById('categoriaOutros').value || 'Outros';
+
+            const visita = {
+                id: Date.now(),
+                data: new Date().toISOString(),
+                nome: document.getElementById('nomeFarmacia').value,
+                valor: valor,
+                verba: valor * ((n + a) / 100),
+                cat: cat,
+                tipo: document.getElementById('tipoVisita').value
+            };
+
+            const visitas = JSON.parse(localStorage.getItem('visitas_v1') || '[]');
+            visitas.unshift(visita);
+            localStorage.setItem('visitas_v1', JSON.stringify(visitas));
+
+            this.reset();
+            document.getElementById('campoOutros').style.display = 'none';
+            render();
+
+            const res = document.getElementById('resultado');
+            res.style.display = 'block';
+            setTimeout(() => res.style.display = 'none', 2000);
+            calcular();
+        });
+
+        function render() {
+            const visitas = JSON.parse(localStorage.getItem('visitas_v1') || '[]');
+            const tbody = document.getElementById('listaVisitas');
+            document.getElementById('msgVazio').style.display = visitas.length ? 'none' : 'block';
+
+            tbody.innerHTML = visitas.map(v => `
+            <tr>
+                <td data-label="Data"><small>${fData(v.data)}</small><br><span class="badge">${v.tipo}</span></td>
+                <td data-label="Farmácia"><strong>${v.nome}</strong><br><small>${v.cat}</small></td>
+                <td data-label="Valor">${fMoeda(v.valor)}</td>
+                <td data-label="Verba" style="color:var(--success-color); font-weight:bold">${fMoeda(v.verba)}</td>
+            </tr>
+        `).join('');
+        }
+
+        function exportarCSV() {
+            const visitas = JSON.parse(localStorage.getItem('visitas_v1') || '[]');
+            if (!visitas.length) return alert('Sem dados para exportar');
+
+            let csv = '\ufeffData;Farmacia;Categoria;Tipo;Valor Pedido;Verba Calculada\n';
+            visitas.forEach(v => {
+                csv += `${fData(v.data)};${v.nome};${v.cat};${v.tipo};${v.valor.toFixed(2)};${v.verba.toFixed(2)}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `Relatorio_Visitas_${new Date().toISOString().slice(0, 10)}.csv`;
+            link.click();
+        }
+
+        function limparTudo() {
+            if (confirm('Apagar todo o histórico?')) {
+                localStorage.removeItem('visitas_v1');
+                render();
             }
         }
 
-        const novaVisita = {
-            id: Date.now(),
-            data: new Date().toISOString(),
-            nome: document.getElementById('nomeFarmacia').value.trim(),
-            valorTotal: valorTotal,
-            negociacao: negociacao,
-            ativacao: ativacao,
-            categoria: categoriaFinal || 'Não informada',
-            tipo: document.getElementById('tipoVisita').value,
-            totalPorcentagens: (valorTotal * negociacao / 100) + (valorTotal * ativacao / 100)
-        };
-
-        // Recuperar, adicionar e salvar no localStorage
-        let visitas = JSON.parse(localStorage.getItem('visitasFarmacia')) || [];
-        visitas.unshift(novaVisita);
-        localStorage.setItem('visitasFarmacia', JSON.stringify(visitas));
-
-        // Feedback visual
-        renderizarHistorico();
-        const resultado = document.getElementById('resultado');
-        resultado.style.display = 'block';
-        
-        // Limpar formulário para próxima visita
-        document.getElementById('nomeFarmacia').value = '';
-        document.getElementById('categoria').value = 'Pampers';
-        document.getElementById('categoriaOutros').value = '';
-        document.getElementById('campoOutros').style.display = 'none';
-        document.getElementById('nomeFarmacia').focus();
-        
-        // Esconder mensagem após 3 segundos
-        setTimeout(() => { resultado.style.display = 'none'; }, 3000);
-    });
-
-    // Renderizar tabela do histórico
-    function renderizarHistorico() {
-        const visitas = JSON.parse(localStorage.getItem('visitasFarmacia')) || [];
-        const tbody = document.getElementById('listaVisitas');
-        const msgVazio = document.getElementById('msgVazio');
-
-        tbody.innerHTML = '';
-
-        if (visitas.length === 0) {
-            msgVazio.style.display = 'block';
-            return;
-        }
-        msgVazio.style.display = 'none';
-
-        visitas.forEach(visita => {
-            const tr = document.createElement('tr');
-            
-            // Destaque visual para categoria "Outros"
-            const categoriaClass = visita.categoria.toLowerCase().includes('outros') ? 'style="color: #e67e22;"' : '';
-            
-            tr.innerHTML = `
-                <td data-label="Data">
-                    <small>${formatarData(visita.data)}</small><br>
-                    <span class="badge">${visita.tipo}</span>
-                </td>
-                <td data-label="Farmácia"><strong>${visita.nome}</strong></td>
-                <td data-label="Categoria" ${categoriaClass}>${visita.categoria}</td>
-                <td data-label="Valor">${formatarMoeda(visita.valorTotal)}</td>
-                <td data-label="Total %" style="color: var(--success-color); font-weight:bold;">
-                    ${formatarMoeda(visita.totalPorcentagens)}
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-    }
-
-    // Limpar todo o histórico
-    function limparHistorico() {
-        const visitas = JSON.parse(localStorage.getItem('visitasFarmacia')) || [];
-        if (visitas.length === 0) {
-            alert('ℹ️ Não há visitas para limpar.');
-            return;
-        }
-        if (confirm('⚠️ Tem certeza que deseja apagar TODO o histórico?\n\nEsta ação não pode ser desfeita.')) {
-            localStorage.removeItem('visitasFarmacia');
-            renderizarHistorico();
-        }
-    }
-
-    // Inicialização
-    window.addEventListener('load', function() {
-        calcularPorcentagens();
-        renderizarHistorico();
-    });
-</script>
+        window.onload = () => { render(); calcular(); };
+    </script>
 
 </body>
+
 </html>
